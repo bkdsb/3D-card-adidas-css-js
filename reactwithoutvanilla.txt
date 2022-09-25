@@ -1,0 +1,83 @@
+functionality without VanillaJS: 
+(of course it is hard-coded Data - but you can go from there and apply dynamic content with a backend-api )
+
+I hope it helps someone :)
+
+
+import React, {Fragment, useState} from 'react';
+import './3dItemCard.styles.scss'
+
+export const DreiDCard = () => {
+
+
+//Set all neccecary States
+const [card, setCard] = useState('');
+const [transition, setTransition] = useState('');
+const [translateZtitle, setTranslateZtitle] = useState('');
+const [translateZSneaker, setTranslateZSneaker] = useState('');
+const [translateZDescription, setTranslateZDescription] = useState('');
+const [translateZSizes, setTranslateZSizes] = useState('');
+const [translateZPurchase, setTranslateZPurchase] = useState('');
+const [x, setX] = useState(0); 
+const [y, setY] = useState(0); 
+
+//Set the Mouse Event Function
+const handleConatiner = (e) => {
+
+    setX((window.innerWidth / 1.2 - e.clientX) / 40);
+    setY((window.innerHeight / 2 - e.clientY) / 40);
+
+    setCard(`rotateY(${x}deg) rotateX(${y}deg)`);
+
+}
+//all StateChanges with mouseEnter
+const handleConatinerEnter = () => {
+    setTransition('all 0.5s ease');
+    setTranslateZtitle('translateZ(100px)')
+    setTranslateZSneaker('translateZ(150px) rotateZ(-45deg)');
+    setTranslateZDescription('translateZ(125px)');
+    setTranslateZSizes('translateZ(100px)');
+    setTranslateZPurchase('translateZ(75px)');
+}
+//all StateChanges with mouseLeave
+const handleConatinerLeave = () => {
+    setCard(`rotateY(${0}deg) rotateX(${0}deg)`);
+    setTransition('all 0.5s ease');
+    setTranslateZtitle('translateZ(0px)');
+    setTranslateZSneaker('translateZ(0px) rotateZ(0deg)');
+    setTranslateZSizes('translateZ(0px)');
+    setTranslateZPurchase('translateZ(0px)');
+}
+    return(
+        <Fragment>
+        <div className="containerer" 
+        onMouseOver={handleConatiner}
+        onMouseEnter={handleConatinerEnter}
+        onMouseLeave={handleConatinerLeave}>
+        <div className="carde" 
+        style={{    
+            transform: card,
+            transition: transition
+        }}>
+            <div className="sneaker">
+                <div className="circle"></div>
+                <img style={{transform:translateZSneaker}} src="/img/3dCardItemImg/adidas.png" alt="adidas" />
+            </div>
+            <div className="info">
+                <h1 className="title" style={{transform:translateZtitle}}>Adidas ZX</h1>
+                <h3 style={{transform:translateZDescription}}>FUTURE-READY TRAINERS WITH WRAPPED BOOST FOR EXCEPTION COMFORT.</h3>
+                <div className="sizes" style={{transform:translateZSizes}}>
+                    <button>39</button>
+                    <button>40</button>
+                    <button className="active">42</button>
+                    <button>44</button>
+                </div>
+                <div className="purchase" style={{transform:translateZPurchase}}>
+                    <button>Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        </Fragment>
+    )
+}
